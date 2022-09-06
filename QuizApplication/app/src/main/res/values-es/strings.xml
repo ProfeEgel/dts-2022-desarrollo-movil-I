@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Aplicación Quiz</string>
+
+    <string name="true_text">Cierto</string>
+    <string name="false_text">Falso</string>
+
+    <string name="question_text">¿La tierra es plana?</string>
+</resources>
