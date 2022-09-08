@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,9 +17,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnFalse: Button
     private lateinit var btnNext: Button
 
-    private val questions = mutableListOf<Question>()
-    private var currentQuestionIndex = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,23 +24,18 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState != null) {
-            currentQuestionIndex = savedInstanceState.getInt(QUESTION_INDEX_KEY)
-        }
+        //if (savedInstanceState != null) {
+        //    currentQuestionIndex = savedInstanceState.getInt(QUESTION_INDEX_KEY)
+        //}
+
+        val gameModel: GameModel by viewModels()
 
         txtQuestion = findViewById(R.id.question_text)
         btnTrue = findViewById(R.id.true_button)
         btnFalse = findViewById(R.id.false_button)
         btnNext = findViewById(R.id.next_button)
 
-        questions.add(Question("¿La luna es de queso?", true))
-        questions.add(Question("¿Existe Santa-Claus?", false))
-        questions.add(Question("¿El hombre llegó a la luna?", false))
-        questions.add(Question("¿La tierra es plana?", true))
-        questions.add(Question("¿Es Kotlin mejor que Java?", true))
-        questions.add(Question("¿El cielo realmente es azul?", false))
-
-        txtQuestion.text = questions[currentQuestionIndex].text;
+        txtQuestion.text = gameModel.currentQuestionText;
 
         btnTrue.setOnClickListener { v ->
             Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show()
@@ -53,8 +46,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnNext.setOnClickListener { v ->
-            currentQuestionIndex = (currentQuestionIndex + 1) % questions.size
-            txtQuestion.text = questions[currentQuestionIndex].text
+            gameModel.nextQuestion()
+            txtQuestion.text = gameModel.currentQuestionText
         }
 
         /*
@@ -72,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         Log.d("QUIZAPP_LIFECYCLE", "OnSaveInstanceState()...")
 
-        outState.putInt(QUESTION_INDEX_KEY, currentQuestionIndex)
+        //outState.putInt(QUESTION_INDEX_KEY, currentQuestionIndex)
     }
 
     override fun onStart() {
