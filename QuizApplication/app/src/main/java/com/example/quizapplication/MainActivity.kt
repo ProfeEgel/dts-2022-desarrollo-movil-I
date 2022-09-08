@@ -9,6 +9,8 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
+    private val QUESTION_INDEX_KEY = "QUESTION_INDEX_KEY"
+
     private lateinit var txtQuestion : TextView
     private lateinit var btnTrue: Button
     private lateinit var btnFalse: Button
@@ -23,6 +25,10 @@ class MainActivity : AppCompatActivity() {
         Log.d("QUIZAPP_LIFECYCLE", "OnCreate()...")
 
         setContentView(R.layout.activity_main)
+
+        if (savedInstanceState != null) {
+            currentQuestionIndex = savedInstanceState.getInt(QUESTION_INDEX_KEY)
+        }
 
         txtQuestion = findViewById(R.id.question_text)
         btnTrue = findViewById(R.id.true_button)
@@ -60,6 +66,13 @@ class MainActivity : AppCompatActivity() {
         5. Indicador de "pregunta actual"/"total de preguntas" en la parte superior de la pantalla
         6. Indicador de "puntuación"
          */
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("QUIZAPP_LIFECYCLE", "OnSaveInstanceState()...")
+
+        outState.putInt(QUESTION_INDEX_KEY, currentQuestionIndex)
     }
 
     override fun onStart() {
